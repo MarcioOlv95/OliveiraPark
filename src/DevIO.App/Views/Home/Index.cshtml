@@ -1,0 +1,79 @@
+﻿@model DevIO.App.ViewModels.HomeViewModel
+
+@{
+    ViewData["Title"] = "Início";
+}
+
+<vc:Summary></vc:Summary>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="card text-white bg-primary mb-3 heightCardsInicio" supress-capacity-div="">
+                    <div class="card-body paddingCardsInicio">
+                        <h5 class="card-title">Avulso</h5>
+                        <p class="card-text">Entrada de cliente avulso.</p>
+                        <a asp-controller="Avulsos" asp-action="EditarAvulso" class="stretched-link" data-modal="" supress-capacity-link=""></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card text-white bg-secondary mb-3 heightCardsInicio">
+                    <div class="card-body paddingCardsInicio">
+                        <h5 class="card-title">Mensal</h5>
+                        <p class="card-text">Realize o cadastro de um cliente mensal.</p>
+                        <a asp-controller="Mensais" asp-action="Index" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-3">
+                <div class="card text-white bg-success mb-3 heightCardsInicio">
+                    <div class="card-body paddingCardsInicio">
+                        <h5 class="card-title">Pagamento Mensal</h5>
+                        <p class="card-text">Realize o pagamento de um cliente mensal.</p>
+                        <a href="#" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card bg-light mb-3 heightCardsInicio">
+                    <div class="card-body paddingCardsInicio">
+                        <h5 class="card-title">Relatórios</h5>
+                        <p class="card-text">Extração de relatórios.</p>
+                        <a href="#" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="ListaAvulsos">
+    <partial name="..\Avulsos\_ListaAvulsos" model="@Model.AvulsoViewModelL" />
+</div>
+
+<div id="myModal" class="modal fade in">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="myModalContent"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/lib/jquery.mask/jquery.mask.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            AjaxModal();
+        });
+    </script>
+}

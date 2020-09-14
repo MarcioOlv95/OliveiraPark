@@ -1,0 +1,117 @@
+﻿@model DevIO.App.ViewModels.MensalViewModel
+
+@{
+    ViewData["Title"] = "Criar novo cadastro";
+}
+
+<h1>Criar novo cadastro</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+
+            <vc:Summary></vc:Summary>
+
+            <div class="col-md-12">
+                <h4>Mensal</h4>
+                <hr />
+            </div>
+            <div class="col-md-4">
+
+                @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+
+                <div class="form-group">
+                    <label asp-for="ValidadeContrato" class="control-label"></label>
+                    <input asp-for="ValidadeContrato" class="form-control" />
+                    <span asp-validation-for="ValidadeContrato" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DataPagamento" class="control-label"></label>
+                    <input asp-for="DataPagamento" class="form-control" />
+                    <span asp-validation-for="DataPagamento" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ValorMulta" class="control-label"></label>
+                    <input asp-for="ValorMulta" class="form-control valor" />
+                    <span asp-validation-for="ValorMulta" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="col-md-12">
+                <h4>Carro</h4>
+                <hr />
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Carro.Modelo" class="control-label"></label>
+                    <input asp-for="Carro.Modelo" class="form-control" />
+                    <span asp-validation-for="Carro.Modelo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Carro.Placa" class="control-label"></label>
+                    <input asp-for="Carro.Placa" class="form-control placa" />
+                    <span asp-validation-for="Carro.Placa" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Carro.Cor" class="control-label"></label>
+                    <input asp-for="Carro.Cor" class="form-control" />
+                    <span asp-validation-for="Carro.Cor" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Carro.TipoVeiculo" class="control-label"></label>
+                    <select asp-for="Carro.TipoVeiculo" asp-items="Html.GetEnumSelectList<DevIo.Business.Models.TipoVeiculo>()" class="form-control">
+                        <option></option>
+                    </select>
+                    <span asp-validation-for="Carro.TipoVeiculo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Carro.Tamanho" class="control-label"></label>
+                    <select asp-for="Carro.Tamanho" asp-items="Html.GetEnumSelectList<DevIo.Business.Models.TamanhoVeiculo>()" class="form-control">
+                        <option></option>
+                    </select>
+                    <span asp-validation-for="Carro.Tamanho" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <h4>Dados do cliente</h4>
+                <hr />
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Cliente.Nome" class="control-label"></label>
+                    <input asp-for="Cliente.Nome" class="form-control" />
+                    <span asp-validation-for="Cliente.Nome" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Cliente.Endereco" class="control-label"></label>
+                    <input asp-for="Cliente.Endereco" class="form-control" />
+                    <span asp-validation-for="Cliente.Endereco" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Cliente.Cpf" class="control-label"></label>
+                    <input asp-for="Cliente.Cpf" class="form-control cpf" />
+                    <span asp-validation-for="Cliente.Cpf" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="submit" value="Criar" class="btn btn-primary" /> &nbsp;
+                    <a asp-action="Index">Cancelar</a>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/lib/jquery.mask/jquery.mask.min.js"></script>
+}

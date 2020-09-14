@@ -1,0 +1,70 @@
+﻿using DevIo.Business.Interfaces.Repository;
+using DevIo.Business.Models;
+using DevIO.Data.Context;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DevIO.Data.Repository
+{
+    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, new()
+    {
+        protected readonly ParkContext Db;
+        protected readonly DbSet<TEntity> DbSet; //utilizado como atalho
+
+        public Repository(ParkContext db)
+        {
+            Db = db;
+            DbSet = db.Set<TEntity>();
+        }
+
+        #region busca
+
+        public async Task<IEnumerable<TEntity>> Buscar(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await DbSet.AsNoTracking().Where(predicate).ToListAsync();
+        }
+
+        public virtual async Task<TEntity> ObterPorID(Guid id)
+        {
+            return await DbSet.FindAsync(id);
+        }
+
+        public virtual async Task<List<TEntity>> ObterTodos()
+        {
+            return await Task.FromResult(DbSet.ToListAsync().Result.Where(x => x.Ativo == true).ToList());
+        }
+
+        #endregion
+
+        #region Atualizacao
+
+        public virtual async Task Adicionar(TEntity entity)
+        {
+            DbSet.Add(entity);
+            await SaveChanges();
+        }
+
+        public virtual async Task Atualizar(TEntity entity)
+        {
+            DbSet.Update(entity);
+            await SaveChanges();
+        }
+
+        public async Task<int> SaveChanges()
+        {
+            return await Db.SaveChangesAsync();
+        }
+
+        #endregion
+
+        public void Dispose()
+        {
+            Db?.Dispose();
+        }
+    }
+}

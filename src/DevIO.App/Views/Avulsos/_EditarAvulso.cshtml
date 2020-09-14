@@ -1,0 +1,134 @@
+﻿@model DevIO.App.ViewModels.AvulsoViewModel
+
+@{
+    ViewData["Title"] = "Editar avulso";
+}
+
+<div class="modal-header">
+    <h4 class="modal-title">@ViewData["Title"]</h4>
+    <button type="button" class="close" data-dismiss="modal">
+        <span aria-hidden="true">x</span><span class="sr-only">Fechar</span>
+    </button>
+</div>
+
+<form asp-action="Edit">
+    <div class="modal-body">
+
+        <vc:Summary></vc:Summary>
+
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="DataAlteracao" />
+        <input type="hidden" asp-for="DataCadastro" />
+        <input type="hidden" asp-for="Ativo" />
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label asp-for="Placa" class="control-label"></label>
+                    <input asp-for="Placa" class="form-control w-25" />
+                    <span asp-validation-for="Placa" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="HrEntrada" class="control-label"></label>
+                    <input asp-for="HrEntrada" class="form-control" />
+                    <span asp-validation-for="HrEntrada" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="HrSaida" class="control-label"></label>
+                    <input id="hrSaida" asp-for="HrSaida" class="form-control" />
+                    <span id="msgValidacaoSaida" asp-validation-for="HrSaida" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6 btnModalAvulso">
+                <input type="button" value="Marcar horário de agora" id="btnMarcarHorarioAtual" class="btn btn-secondary" onclick="MarcarHorarioAtual()" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PrecoFinal" class="control-label"></label>
+                    <input asp-for="PrecoFinal" class="form-control" />
+                    <span asp-validation-for="PrecoFinal" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6 btnModalAvulso">
+                <input type="button" id="btnCalcularPreco" value="Calcular preço" class="btn btn-secondary" onclick="CalcularPreco()" />
+            </div>
+        </div>
+
+        <div class="modal-footer text-center">
+            <div class="col-md-offset-12 col-md-12">
+                <input type="submit" id="btnSalvar" value="Salvar avulso" class="btn btn-success" />
+                <input type="button" class="btn btn-info" value="Fechar" data-dismiss="modal" />
+            </div>
+        </div>
+
+    </div>
+</form>
+
+<script>
+
+    $(document).ready(function () {
+
+        if ('@Model.Placa' == "")
+        {
+            $("#hrSaida").prop('readonly', true);
+            $("#btnMarcarHorarioAtual").prop('disabled', true);
+            $("#PrecoFinal").prop('readonly', true);
+            $("#btnCalcularPreco").prop('disabled', true);
+        }
+        else
+        {
+            $("#Placa").prop('readonly', true);
+            $("#HrEntrada").prop('readonly', true);
+        }
+
+        $('#Placa').mask('SSS0A00');
+
+        $('#Placa').on('input', function (evt) {
+            $(this).val(function (_, val) {
+                return val.toUpperCase();
+            });
+        });
+
+    })
+
+    function CalcularPreco() {
+
+        if ($("#hrSaida").val() == '') {
+            $("#msgValidacaoSaida").html('a data de iníno deve ser preenchida')
+            return;
+        } else {
+            $("#msgValidacaoSaida").html('')
+
+            $.ajax({
+                url: '@Url.Action("CalcularPreco", "Avulsos")',
+                type: "GET",
+                data: {
+                    id: $("#Id").val(),
+                    dataSaida: $("#hrSaida").val()
+                },
+                success: function (result) {
+                    $("#PrecoFinal").val(result)
+                },
+                error: function (result) {
+                    $("#msgValidacaoSaida").html(result.responseText)
+                }
+            })
+        }
+
+    }
+
+</script>

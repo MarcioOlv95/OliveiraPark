@@ -1,0 +1,54 @@
+﻿@model IEnumerable<DevIO.App.ViewModels.AvulsoViewModel>
+
+<div class="row">
+    <div class="col-md-12">
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">@Html.DisplayNameFor(model => model.Placa)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.HrEntrada)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.HrSaida)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.PrecoFinal)</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Placa)</td>
+
+                            <td>@Html.DisplayFor(modelItem => item.HrEntrada)</td>
+
+                            <td>
+                                @if (item.HrSaida != DateTime.MinValue)
+                                {
+                                    @Html.DisplayFor(modelItem => item.HrSaida)
+                                }
+                            </td>
+
+                            <td>@item.PrecoFinal.ToString("C")</td>
+
+                            <td>
+                                <a class="btn btn-warning" data-modal="" asp-controller="Avulsos" asp-action="EditarAvulso" asp-route-id="@item.Id">
+                                    <span class="fa fa-pencil-alt"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5">Não há avulsos cadastrados</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
